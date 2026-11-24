@@ -1,59 +1,57 @@
-# campaign_audit.py
-
-import csv
-
-# This function reads the CSV file and stores the campaigns.
-def load_campaigns(filename):
-    campaigns = []
-
-    # Open the file and read each campaign.
-    with open(filename, "r", encoding="utf-8-sig", newline="") as file:
-        reader = csv.DictReader(file, delimiter=";")
-
-        for row in reader:
-            campaigns.append(row)
-
-    return campaigns
 
 
-# Test to see the file can be read correctly.
-campaigns = load_campaigns("campaigns_C(1)")
+# Campaign Audit Quiz
 
-print("Number of campaigns:", len(campaigns))
-print("First campaign:", campaigns[0]["Campaign"])
+## Project Description
 
+This project is a Python quiz based on advertising campaign data.
 
-# This function cleans the campaign data.
-def clean_campaigns(campaigns):
-    clean_data = []
+The program reads a CSV file, cleans the data, calculates marketing performance indicators and asks the player five questions.
 
-    # Check each campaign one by one.
-    for campaign in campaigns:
+## Features
 
-        # Skip campaigns with missing impressions.
-        if campaign["Impressions"] == "":
-            continue
+The program can:
 
-        try:
-            # Convert text values into numbers.
-            campaign["Impressions"] = int(campaign["Impressions"])
-            campaign["Clicks"] = int(campaign["Clicks"])
-            campaign["Conversions"] = int(campaign["Conversions"])
+1. Read campaign data from campaigns_C.csv.
+2. Remove campaigns with missing impressions.
+3. Convert European decimal commas into dots.
+4. Calculate CTR, CPA and ROAS.
+5. Ask five questions about campaign performance.
+6. Check the answers and calculate a score out of 5.
+7. Save the player's name, score and date in result.csv.
 
-            # Replace European decimal commas with dots.
-            campaign["Cost (€)"] = float(
-                campaign["Cost (€)"].replace(",", ".")
-            )
-            campaign["Revenue (€)"] = float(
-                campaign["Revenue (€)"].replace(",", ".")
-            )
+## Marketing Indicators
 
-            # Keep the cleaned campaign.
-            clean_data.append(campaign)
+- CTR = Clicks / Impressions
+- CPA = Cost / Conversions
+- ROAS = Revenue / Cost
 
-        except (ValueError, TypeError):
-            # Skip rows containing invalid numbers.
-            print("Invalid data:", campaign["Campaign"])
+The program also handles zero conversions to avoid division errors.
 
-    return clean_data
+## How to Run the Program
+
+Open the terminal in GitHub Codespaces and type:
+
+`python campaign_audit.py`
+
+Enter your name and answer the five questions.
+
+At the end, the program displays your score and saves the result in result.csv.
+
+## Project Files
+
+- campaign_audit.py — Main Python program
+- campaigns_C.csv — Advertising campaign dataset
+- result.csv — Player scores and dates
+- CONVERSATION.md — AI conversations, tests and errors
+
+## Testing
+
+I tested the program using my campaign dataset.
+
+The program successfully loaded 12 campaigns and kept 11 valid campaigns after cleaning.
+
+I tested the quiz twice and obtained scores of 5/5 and 4/5.
+
+The program correctly calculated the scores and saved the results in result.csv.
 
